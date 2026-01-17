@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WineDows 18</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('images/background.png'); /* Заменится скриптом */
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center center;
+      font-family: Segoe UI, sans-serif; /* Шрифт как в Windows 10 */
+    }
+
+    #desktop {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .icon {
+      position: absolute;
+      cursor: pointer;
+      user-select: none;
+      width: 64px;
+      height: 64px;
+    }
+
+    .icon img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .icon span {
+      font-size: 12px;
+      display: block;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* Панель времени и даты (как в Windows 10) */
+    #taskbar {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      height: 40px;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 10px;
+      box-sizing: border-box;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+    }
+
+    #clock {
+      color: white;
+      font-size: 14px;
+      margin-left: 10px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="desktop">
+    <!-- Существующие иконки -->
+    <div class="icon" data-app="youtube" data-url="https://www.youtube.com">
+      <img src="icons/youtube.png" alt="YouTube">
+      <span>YouTube</span>
+    </div>
+    <div class="icon" data-app="rutube" data-url="https://rutube.ru">
+      <img src="icons/rutube.png" alt="RuTube">
+      <span>RuTube</span>
+    </div>
+    <div class="icon" data-app="telegram" data-url="https://web.telegram.org">
+      <img src="icons/telegram.png" alt="Telegram">
+      <span>Telegram</span>
+    </div>
+    <div class="icon" data-app="max" data-url="https://web.max.ru">
+      <img src="icons/max.png" alt="Max">
+      <span>Max</span>
+    </div>
+    <div class="icon" data-app="wikipedia" data-url="https://ru.wikipedia.org">
+      <img src="icons/wikipedia.png" alt="Wikipedia">
+      <span>Википедия</span>
+    </div>
+    <div class="icon" id="wace-icon" data-app="wace" data-url="https://app.wace.ai">
+      <img src="icons/wace.png" alt="Wace">
+      <span>Wace</span>
+    </div>
+    <div class="icon" id="alice-icon" data-app="alice" data-url="https://alice.yandex.ru">
+      <img src="icons/alice.png" alt="Алиса">
+      <span>Алиса</span>
+    </div>
+    <div class="icon" id="meet-icon" data-app="meet" data-url="https://meet.google.com">
+      <img src="icons/meet.png" alt="Google Meet">
+      <span>Google Meet</span>
+    </div>
+    <div class="icon" data-app="yandex" data-url="https://ya.ru">
+      <img src="icons/yandex.png" alt="Яндекс">
+      <span>Яндекс</span>
+    </div>
+    <div class="icon" data-app="google" data-url="https://www.google.com">
+      <img src="icons/google.png" alt="Google">
+      <span>Google</span>
+    </div>
+    <div class="icon" data-app="google-play" data-url="https://play.google.com">
+      <img src="icons/google-play.png" alt="Google Play">
+      <span>Google Play</span>
+    </div>
+    <div class="icon" data-app="yandex-games" data-url="https://yandex.ru/games">
+      <img src="icons/yandex-games.png" alt="Яндекс Игры">
+      <span>Яндекс Игры</span>
+    </div>
+
+    <!-- Новые иконки -->
+    <div class="icon" data-app="github" data-url="https://github.com">
+      <img src="icons/github.png" alt="GitHub">
+      <span>GitHub</span>
+    </div>
+    <div class="icon" data-app="gmail" data-url="https://mail.google.com">
+      <img src="icons/gmail.png" alt="Gmail">
+      <span>Gmail</span>
+    </div>
+    <div class="icon" data-app="yandex-mail" data-url="https://mail.yandex.ru">
+      <img src="icons/yandex-mail.png" alt="Яндекс Почта">
+      <span>Яндекс Почта</span>
+    </div>
+    <div class="icon" data-app="email" data-url="https://mail.ru">
+      <img src="icons/email.png" alt="Email">
+      <span>Email</span>
+    </div>
+    <div class="icon" data-app="vk" data-url="https://vk.com">
+      <img src="icons/vk.png" alt="VK">
+      <span>VK</span>
+    </div>
+
+    <!-- Иконки игр -->
+    <div class="icon" data-app="sea-battle" data-url="https://yandex.ru/games/app/343168">
+      <img src="icons/sea-battle.png" alt="Морской бой">
+      <span>Морской бой</span>
+    </div>
+    <div class="icon" data-app="asphalt8" data-url="https://yandex.ru/games/app/272081">
+      <img src="icons/asphalt8.png" alt="М5 Асфальт 8">
+      <span>М5 Асфальт 8</span>
+    </div>
+    <div class="icon" data-app="cs2-snipers" data-url="https://yandex.ru/games/app/292954">
+      <img src="icons/cs2-snipers.png" alt="КС 2 Снайперы">
+      <span>КС 2 Снайперы</span>
+    </div>
+    <div class="icon" data-app="pixel-path" data-url="https://yandex.ru/games/app/473102">
+      <img src="icons/pixel-path.png" alt="Путь пикселя">
+      <span>Путь пикселя</span>
+    </div>
+  </div>
+    <div class="icon" data-app="google-drive" data-url="https://drive.google.com/drive/my-drive">
+      <img src="icons/google-drive.png" alt="Google Drive">
+      <span>Google Drive</span>
+    </div>
+  </div>
+    <div class="icon" data-app="yandex-drive" data-url="https://disk.yandex.ru/client/recent">
+      <img src="icons/yandex-drive.png" alt="Yandex Drive">
+      <span>Yandex Drive</span>
+    </div>
+  </div>
+    <div class="icon" data-app="yandex-mesenger" data-url="https://yandex.ru/chat#/">
+      <img src="icons/yandex-messenger.png" alt="Yandex Messenger">
+      <span>Yandex Messenger</span>
+    </div>
+  </div>
+    <div class="icon" data-app="profi-ru" data-url="https://profi.ru">
+      <img src="icons/profi.png" alt="Profi-ru">
+      <span>Profi.ru</span>
+    </div>
+  </div>
+    <div class="icon" data-app="yandex-food" data-url="https://eda.yandex.ru">
+      <img src="icons/yandex-food.png" alt="Yandex-food">
+      <span>Yandex food</span>
+    </div>
+  </div>
+    <div class="icon" data-app="Учебник" data-url="https://education.yandex.ru">
+      <img src="icons/books.png" alt="Учебник">
+      <span>Учебник</span>
+    </div>
+  </div>
+    <div class="icon" data-app="Телепрограмма" data-url="https://tv.yandex.ru">
+      <img src="icons/tv-yandex.png" alt="Телепрограмма">
+      <span>Телепрограмма</span>
+    </div>
+  </div>
+    <div class="icon" data-app="Такси" data-url="https://taxi.yandex.ru">
+      <img src="icons/taxi-yandex.png" alt="Такси">
+      <span>Такси</span>
+    </div>
+  </div>
+    <div class="icon" data-app="Переводчик" data-url="https://translate.yandex.ru">
+      <img src="icons/translate.png" alt="Переводчик">
+      <span>Переводчик</span>
+    </div>
+  </div>
+    <div class="icon" data-app="GAME CASE DOWLOAD HTML" data-url="https://sites.google.com/view/ruslankx-labs/главная-страница">
+      <img src="icons/krg.jpg" alt="GAME CASE DOWLOAD HTML">
+      <span>GAME CASE DOWLOAD HTML</span>
+    </div>
+  </div>
+    <div class="icon" data-app="AI МАКСНЕЙРО" data-url="app/gorogi-lire.html">
+      <img src="icons/maks.jpg" alt="AI МАКСНЕЙРО">
+      <span>AI МАКСНЕЙРО</span>
+    </div>
+  </div>
+    <div class="icon" data-app="Аркадион" data-url="app/arka.html">
+      <img src="icons/arka.webp" alt="Аркадион">
+      <span>Аркадион</span>
+    </div>
+  </div>
+    <div class="icon" data-app="Калькулятор" data-url="app/calc.html">
+      <img src="icons/calc.png" alt="Калькулятор">
+      <span>Калькулятор</span>
+    </div>
+  </div>
+    <div class="icon" data-app="АР МАДЖОНГ" data-url="app/madjong.html">
+      <img src="icons/madjong.png" alt="АР МАДЖОНГ">
+      <span>АР МАДЖОНГ</span>
+    </div>
+  </div>
+    <div class="icon" data-app="MAKS" data-url="app/maksprotwo.html">
+      <img src="icons/maks.png" alt="MAKS">
+      <span>MAKS</span>
+    </div>
+  </div>
+    <div class="icon" data-app="Шарик" data-url="app/shar.html">
+      <img src="icons/shar.png" alt="Шарик">
+      <span>Шарик</span>
+    </div>
+  </div>
+
+  <!-- Панель задач с часами и датой -->
+  <div id="taskbar">
+    <div id="clock"></div>
+  </div>
+
+  <script>
+    const desktop = document.getElementById('desktop');
+
+    // Массив путей к фоновым изображениям
+    const backgrounds = [
+      'images/background.png',
+      'images/background1.png',
+      'images/background2.png',
+      'images/background3.png',
+      'images/background4.png'
+    ];
+
+    // Функция для установки случайного фона
+    function setRandomBackground() {
+      const randomIndex = Math.floor(Math.random() * backgrounds.length);
+      const randomBackground = backgrounds[randomIndex];
+      document.body.style.backgroundImage = `url('${randomBackground}')`;
+    }
+
+    // Обновление времени и даты
+    function updateClock() {
+      const now = new Date();
+      
+      // Форматируем время: чч:мм
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const timeStr = `${hours}:${minutes}`;
+      
+      // Форматируем дату: ДД.ММ.ГГГГ
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0'); // Месяц от 0 до 11
+      const year = now.getFullYear();
+      const dateStr = `${day}.${month}.${year}`;
+      
+      // Выводим в панель
+      document.getElementById('clock').textContent = `${timeStr}  ${dateStr}`;
+    }
+
+    // Открытие сайтов по двойному клику + установка фона и часов при загрузке
+    document.addEventListener('DOMContentLoaded', () => {
+      // Устанавливаем случайный фон
+      setRandomBackground();
+      
+      // Инициализируем часы и запускаем обновление каждую минуту
+      updateClock();
+      setInterval(updateClock, 60000); // Каждые 60 секунд
+      
+      // Обработчики двойного клика для иконок
+      document.querySelectorAll('.icon').forEach(icon => {
+        icon.addEventListener('dblclick', () => {
+          const url = icon.dataset.url;
+          if (url) {
+            window.open(url, '_blank');
+          }
+        });
+      });
+    });
+
+    // Позиционирование всех иконок (0–20)
+    document.querySelectorAll('.icon').forEach((icon, index) => {
+      switch (index) {
+        case 0:  // YouTube
+          icon.style.left = '50px';
+          icon.style.top = '100px';
+          break;
+        case 1:  // RuTube
+          icon.style.left = '150px';
+          icon.style.top = '100px';
+          break;
+        case 2:  // Telegram
+          icon.style.left = '50px';
+          icon.style.top = '200px';
+          break;
+        case 3:  // Max
+          icon.style.left = '150px';
+          icon.style.top = '200px';
+          break;
+        case 4:  // Википедия
+          icon.style.left = '250px';
+          icon.style.top = '100px';
+          break;
+        case 5:  // Wace
+          icon.style.left = '50px';
+          icon.style.top = '300px';
+          break;
+        case 6:  // Алиса
+          icon.style.left = '350px';
+          icon.style.top = '100px';
+          break;
+        case 7:  // Google Meet
+          icon.style.left = '50px';
+          icon.style.top = '400px';
+          break;
+        case 8:  // Яндекс
+          icon.style.left = '250px';
+          icon.style.top = '200px';
+          break;
+        case 9:  // Google
+          icon.style.left = '350px';
+          icon.style.top = '200px';
+          break;
+        case 10:  // Google Play
+          icon.style.left = '450px';
+          icon.style.top = '200px';
+          break;
+        case 11:  // Яндекс Игры
+          icon.style.left = '550px';
+          icon.style.top = '200px';
+          break;
+        case 12:  // GitHub
+          icon.style.left = '50px';
+          icon.style.top = '500px';
+          break;
+        case 13:  // Gmail
+          icon.style.left = '150px';
+          icon.style.top = '500px';
+          break;
+        case 14:  // Яндекс Почта
+          icon.style.left = '250px';
+          icon.style.top = '500px';
+          break;
+        case 15:  // Email
+          icon.style.left = '350px';
+          icon.style.top = '500px';
+          break;
+        case 16:  // VK
+          icon.style.left = '450px';
+          icon.style.top = '500px';
+          break;
+        case 17:  // Морской бой
+          icon.style.left = '550px';
+          icon.style.top = '500px';
+          break;
+        case 18:  // М5 Асфальт 8
+          icon.style.left = '350px';
+          icon.style.top = '300px';
+          break;
+        case 19:  // КС 2 Снайперы
+          icon.style.left = '450px';
+          icon.style.top = '400px';
+          break;
+        case 20:  // Путь пикселя
+          icon.style.left = '450px';
+          icon.style.top = '300px';
+          break;
+        case 21:  // Google Drive
+          icon.style.left = '550px';
+          icon.style.top = '300px';
+          break;
+        case 22:  // Yandex Drive
+          icon.style.left = '550px';
+          icon.style.top = '400px';
+          break;
+        case 23:  // Yandex Messenger
+          icon.style.left = '350px';
+          icon.style.top = '400px';
+          break;
+        case 24:  // Profi-ru
+          icon.style.left = '250px';
+          icon.style.top = '300px';
+          break;
+        case 25:  // Yandex-food
+          icon.style.left = '250px';
+          icon.style.top = '400px';
+          break;
+        case 26:  // Учебник
+          icon.style.left = '150px';
+          icon.style.top = '300px';
+          break;
+        case 27:  // Телепрограмма
+          icon.style.left = '150px';
+          icon.style.top = '400px';
+          break;
+        case 28:  // Такси
+          icon.style.left = '450px';
+          icon.style.top = '100px';
+          break;
+        case 29:  // Переводчик
+          icon.style.left = '550px';
+          icon.style.top = '100px';
+          break;
+        case 30:  // GAME CASE DOWLOAD HTML
+          icon.style.left = '650px';
+          icon.style.top = '100px';
+          break;
+        case 31:  // AI МАКСНЕЙРО
+          icon.style.left = '650px';
+          icon.style.top = '200px';
+          break;
+        case 32:  // Аркадион
+          icon.style.left = '650px';
+          icon.style.top = '300px';
+          break;
+        case 33:  // Калькулятор
+          icon.style.left = '650px';
+          icon.style.top = '400px';
+          break;
+        case 34:  // АР МАДЖОНГ
+          icon.style.left = '650px';
+          icon.style.top = '500px';
+          break;
+        case 35:  // MAKS
+          icon.style.left = '750px';
+          icon.style.top = '100px';
+          break;
+        case 36:  // Шарик
+          icon.style.left = '750px';
+          icon.style.top = '200px';
+          break;
+      }
+    });
+  </script>
+</body>
+</html>
